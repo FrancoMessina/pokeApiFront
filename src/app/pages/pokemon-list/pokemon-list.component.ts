@@ -19,6 +19,7 @@ export class PokemonListComponent implements OnInit {
   totalPages: number = 0;
   selectedPokemon: Pokemon | null = null;
   pages: number[] = [];
+  visiblePagesLimit: number = 5;
   constructor(private pokemonService: PokemonService) { }
 
   ngOnInit(): void {
@@ -26,13 +27,19 @@ export class PokemonListComponent implements OnInit {
   }
 
   loadPokemons(): void {
-    this.pokemonService.getAllPokemons().subscribe(
+    this.pokemonService.getAllPokemons(this.currentPage,5).subscribe(
       (data) => {
         console.log(data)
         this.pokemons = data.content;
         console.log(this.pokemons);
-        this.totalPages = Math.ceil(this.pokemons.length / this.itemsPerPage);
-        this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+        const totalItems = data.totalElements;
+        this.totalPages = data.totalPages;
+        
+        // Calcular las páginas a mostrar en la paginación
+        const startIndex = Math.max(1, this.currentPage - Math.floor(this.visiblePagesLimit / 2));
+        const endIndex = Math.min(this.totalPages, startIndex + this.visiblePagesLimit - 1);
+        
+        this.pages = Array.from({ length: endIndex - startIndex + 1 }, (_, i) => startIndex + i);
       },
       (error) => {
         console.error('Error fetching pokemons:', error);
@@ -42,6 +49,7 @@ export class PokemonListComponent implements OnInit {
 
   changePage(page: number): void {
     this.currentPage = page;
+    this.loadPokemons(); 
   }
 
   showDetails(pokemon: Pokemon): void {
