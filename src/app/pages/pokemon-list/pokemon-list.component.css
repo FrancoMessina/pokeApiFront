@@ -1,0 +1,19 @@
+.pokemon-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  list-style: none;
+  gap: 10px;
+  padding: 10px;
+}
+
+.pokemon-list li {
+  text-align: center;
+}
+.card {
+  background-color: #6a7bf6; 
+  border: none; 
+}
+
+.card-img-top {
+  max-height: 200px;
+}
