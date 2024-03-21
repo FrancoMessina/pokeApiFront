@@ -19,6 +19,6 @@ export class PokemonService {
     return this.http.get(`${environment.apiUrlBase}/pokemon/all`, { params });
   }
   getPokemonDetails(name: string): Observable<any> {
-    return this.http.get(`${environment.apiUrlBase}details/${name}`);
+    return this.http.get(`${environment.apiUrlBase}/pokemon/details/${name}`);
   }
 }

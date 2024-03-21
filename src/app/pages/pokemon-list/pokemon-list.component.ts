@@ -20,6 +20,7 @@ export class PokemonListComponent implements OnInit {
   selectedPokemon: Pokemon | null = null;
   pages: number[] = [];
   visiblePagesLimit: number = 5;
+  seleccionoPokemon : boolean = true;
   constructor(private pokemonService: PokemonService) { }
 
   ngOnInit(): void {
@@ -27,7 +28,7 @@ export class PokemonListComponent implements OnInit {
   }
 
   loadPokemons(): void {
-    this.pokemonService.getAllPokemons(this.currentPage,5).subscribe(
+    this.pokemonService.getAllPokemons(this.currentPage,6).subscribe(
       (data) => {
         console.log(data)
         this.pokemons = data.content;
@@ -53,10 +54,21 @@ export class PokemonListComponent implements OnInit {
   }
 
   showDetails(pokemon: Pokemon): void {
-    this.selectedPokemon = pokemon;
+    this.seleccionoPokemon = false;
+    this.pokemonService.getPokemonDetails(pokemon.name).subscribe(
+      (details) => {
+        this.selectedPokemon = details;
+        console.log(details);
+      },
+      (error) => {
+        console.error('Error fetching pokemon details:', error);
+      }
+    );
   }
 
   closeDetails(): void {
     this.selectedPokemon = null;
+    this.seleccionoPokemon = true;
+    this.loadPokemons();
   }
 }

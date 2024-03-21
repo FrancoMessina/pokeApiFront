@@ -1,4 +1,4 @@
-<div class="container">
+<div *ngIf="seleccionoPokemon" class="container">
   <div class="row">
     <!-- Tarjetas de Pokémon -->
     <div class="col-lg-4 col-md-6 mb-4" *ngFor="let pokemon of pokemons">
@@ -37,4 +37,23 @@
       </li>
     </ul>
   </nav>
+</div>
+<!-- Detalles del Pokémon -->
+<div *ngIf="selectedPokemon" class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title">{{ selectedPokemon.name }}</h5>
+    </div>
+    <div class="card-body">
+      <img [src]="selectedPokemon.photoUrl" class="img-fluid mb-3" [alt]="'Imagen de ' + selectedPokemon.name">
+      <p class="card-text"><strong>Descripción:</strong> {{ selectedPokemon.description }}</p>
+      <p class="card-text"><strong>Movimientos:</strong></p>
+      <ul>
+        <li *ngFor="let move of selectedPokemon.moves">{{ move.move.name }}</li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <button class="btn btn-secondary" (click)="closeDetails()">Cerrar</button>
+    </div>
+  </div>
 </div>
